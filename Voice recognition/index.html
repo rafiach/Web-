@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAhssist</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="responsivevoice.js"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body id="tubuh">
+
+    <script>
+        navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+        console.log('You let me use your mic!')
+        })
+        .catch(function(err) {
+        console.log('No mic for you!')
+        });
+    </script>
+
+    <div class="header">
+        <h1>RAhssist</h1>
+        <h4>Rahmad's Assistant</h4>
+    </div>
+
+    <div id="container">
+        <div id="chatLog">
+            <!-- <div class="bubble user" style="display: none;"></div>
+            <div class="bubble bot" style="display: none;"></div> -->
+        </div>
+        <div id="userInput">
+            <input type="text" id="textInput" placeholder="Ketik pesan...">
+            <button id="btnMic"><i class="fa fa-microphone-alt"></i></button>
+            <button id="btnKirim"><i class="far fa-paper-plane"></i></button>
+        </div>
+    </div> 
+
+    <script>
+        
+        var chatLog = document.getElementById("chatLog");
+        var textInput = document.getElementById("textInput");
+        var btnKirim = document.getElementById("btnKirim");
+        var usr = document.getElementById("user")
+        var bt = document.getElementById("bot")
+        var body = document.getElementById("tubuh");
+
+
+        // menambahkan pesan pada chatlog
+        function addMessage(message, sender) {
+            var messageElement = document.createElement("div");
+            messageElement.className = "bubble " + sender;
+            messageElement.textContent = message;
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        // mengirim pesan menggunakan btnkirim
+        btnKirim.onclick = function() {
+            var message = textInput.value.trim();
+            if (message !== "") {
+                addMessage(message, "user");
+                replyMessage(message);
+                textInput.value = "";
+            }
+            document.body.style.backgroundImage = URL("foto/1.png");
+        };
+
+        // mengirim pesan menggunakan btnMic (menggunakan voice)
+        btnMic.onclick = function (){
+            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+            var recognition = new SpeechRecognition();
+
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                textInput.value = transcript;
+
+                var message = textInput.value.trim();
+                if (message !== "") {
+                    addMessage(message, "user");
+                    replyMessage(message);
+                    textInput.value = "";
+                }
+            };
+            recognition.lang ='id-ID';
+            recognition.start();
+
+            recognition.onspeechend = function() {
+                
+                recognition.stop();
+            }
+        }
+
+        // mengirim menggunakan tombol enter 
+        textInput.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                btnKirim.click();
+            }
+        });
+
+        // skenario balasan untuk chatbot
+        function replyMessage(message) {
+            message = message.toLowerCase(); 
+
+            var reply;
+
+            if (message.includes("alo") || message.includes("hai") || message.includes("hi")) {
+                reply = "Halo! Saya Asisten anda Rahssist, ada yang bisa dibantu?";
+            } else if (message.includes("tanggal")) {
+                var date = new Date();
+                var tgl = formatTanggalIndonesia(date);
+                reply = "Sekarang " + tgl;
+            } else if (message.includes("jam")) {
+                var time = new Date().toLocaleTimeString();
+                reply = "Sekarang jam " + time;
+            } else if (message.includes("joke") || message.includes("lelucon")){
+                reply = "Sapi sapi apa yang bisa nempel di dinding?...... Stiker sapi"
+            } else if (message.includes("terima kasih") || message.includes("terimakasih")){
+                reply = "Sama - sama! Apa ada yang bisa dibantu lagi? "
+            } else if (message.includes("kuliah") || message.includes("kampus")){
+                reply = "Kuliah? Di Universitas Nusantara PGRI Kediri dong.."
+            } else if (message.includes("motivasi") || message.includes("quote")){
+                reply = motivasiea();
+            }else if (message.includes("musik") || message.includes("lagu")) {
+                playaudio.play()
+                reply = "Memainkan musik...";
+            }else if (message.includes("pause") || message.includes("jeda")) {
+                playaudio.pause();
+                reply = "Musik dijeda..."
+            }else if (message.includes("ganti background")) {
+                gantibg();
+                reply = "Mengganti background..."
+            }else{
+                reply = "Saya tidak mengerti apa yang anda maksudkan...";
+            }
+
+            addMessage(reply, "bot");
+        }
+
+        // Fuction untuk mengambil kalimat motivasi
+        function motivasiea() {
+            var quote = [
+                "Jangan Semangat, Tetaplah bersedih, teruslah bernapas walaupun hidup anda tidak berguna",
+                "Sambatlah karena sambat itu manusiawi",
+                "Sudah merasa salah jurusan? ingat kata Morbius : 'Its Morbin Time!!'"
+            ]
+
+            var pickquote = quote[Math.floor(Math.random()*quote.length)];
+
+            return pickquote;
+        }
+
+        // mengganti format tanggal 
+        function formatTanggalIndonesia(date) {
+            var hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            var tanggal = date.getDate();
+            var namaHari = hari[date.getDay()];
+            var namaBulan = bulan[date.getMonth()];
+            var tahun = date.getFullYear();
+
+            return namaHari + ', ' + tanggal + ' ' + namaBulan + ' ' + tahun;
+        }
+
+        // fuction untuk memainkan lagu random
+        // database untuk mengambil nama lagu
+        
+        function picklagu() {
+            var lagu = [
+            "223 AM.mp3",
+            "303 PM.mp3",
+            "10 C.mp3",
+            "dova1.mp3"
+            ]
+            var pick = Math.floor(Math.random() * lagu.length)
+            console.log(lagu.length)
+            
+            return lagu[pick]
+        };
+        
+        var playaudio = new Audio("lagu/" + picklagu());
+
+
+        // function untuk mengganti background
+        function gantibg() {
+            var bg = Math.floor(Math.random() * 5) + 1;
+            var file = bg+".png";
+
+            body.style.backgroundImage = "url('foto/"+ file +"')";
+        }
+    </script>
+</body>
+</html>

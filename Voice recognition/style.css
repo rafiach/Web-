@@ -1,0 +1,120 @@
+:root {
+    --tekscl: white;
+    --lightpurple: #594795;
+    --darkpurple: #3b174d;
+}
+
+body {
+    height: 726px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-image: url(foto/1.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:cover ;    
+}
+
+.header {
+    margin: 30px;
+    color: var(--tekscl);
+}
+
+#container {
+    width: 500px;
+    height: 400px;
+    background-color: rgba(253, 3, 190, 0.128);
+    padding: 50px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 12px;
+    backdrop-filter: blur(50px);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.3);
+}
+
+#chatLog {
+    width: 480px;
+    height: 300px;
+    margin: auto;
+    border: 5px double var(--lightpurple);
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    color: var(--tekscl);
+    display: block;
+}
+
+.bubble {
+    position: relative;
+    display: block;
+    background-color: #e5e5ea;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 50%;
+}
+  
+.user {
+    background-color: var(--darkpurple);
+    text-align: right;
+    /* max-width: max-content; */
+    left: 45%;
+    /* float: right; */
+}
+  
+.bot {
+    background-color: var(--lightpurple);
+    text-align: left;
+    /* max-width: max-content; */
+}
+
+#userInput {
+    margin-top: 30px;
+}
+
+#textInput {
+    width: 300px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: transparent;
+    color: var(--tekscl);
+    overflow-wrap: break-word;
+}
+
+button {
+    height: 35px;
+    width: 35px;
+    margin-left: 10px;
+    padding: 5px;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 40px;
+    color: var(--tekscl);
+    font-size: 17px;
+}
+button:hover {
+    background-color: var(--lightpurple);
+}
+
+.notif {
+    color: var(--tekscl);
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--lightpurple);
+}
